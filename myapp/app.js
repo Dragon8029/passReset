@@ -33,6 +33,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(session({ secret: 'session secret key' }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 userSchema.pre('save', function(next) {
@@ -74,6 +76,17 @@ passport.use(new LocalStrategy(function(username, password, done){
     });
   });
 }));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done){
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
 
 // Routes
 app.get('/', function(req, res) {
