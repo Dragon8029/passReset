@@ -1,4 +1,4 @@
-var express = require('express');
+var express       = require('express');
 var mongoose      = require('mongoose');
 var nodemailer    = require('nodemailer');
 var passport      = require('passport');
@@ -10,6 +10,7 @@ var path          = require('path');
 var favicon       = require('static-favicon');
 var logger        = require('morgan');
 var cookieParser  = require('cookie-parser');
+var session       = require('express-session');
 var bodyParser    = require('body-parser');
 
 passport.use(new LocalStrategy(function(username, password, done){
@@ -70,7 +71,7 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 
 var User = mongoose.model('User', userSchema);
 
-mongoose.connect('localhost');
+mongoose.connect('localhost', {useNewUrlParser: True });
 
 var app = express();
 
@@ -81,9 +82,9 @@ app.set('view engine', 'jade');
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(session({ secret: 'session secret key' }));
+app.use(session({ secret: 'session secret key', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
