@@ -23,6 +23,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(session({ secret: 'session secret key' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
