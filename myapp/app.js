@@ -34,6 +34,23 @@ app.use(cookieParser());
 app.use(session({ secret: 'session secret key' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+userSchema.pre('save', function(next) {
+  var user = this;
+  var SALT_FACTOR = 5;
+
+  if (!user.isModified('password')) return next();
+
+  bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+    if(err) return next(err);
+
+    bcrypt.hash(user.password, salt, null, function(err, hash){
+      if(err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
+});
+
 // Routes
 app.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
