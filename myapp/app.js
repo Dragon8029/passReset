@@ -21,6 +21,7 @@ var userSchema = new mongoose.Schema({
 });
 
 var app = express();
+mongoose.connect('localhost');
 
 // Middleware
 app.set('port', process.env.PORT || 3000);
@@ -57,6 +58,22 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
     cb(null, isMatch);
   });
 };
+
+var User = mongoose.model('User', userSchema);
+
+passport.use(new LocalStrategy(function(username, password, done){
+  User.findOne({ username: username }, function(err, user) {
+    if (err) return done(err);
+    if(!user) return done(null, false, { message: 'Incorrect username.' });
+    user.comparePassword(password, function(err, isMatch) {
+      if (isMatch) {
+        return done(null, user);
+      } else {
+        return done(null, false, { message: 'Incorrect password.'});
+      }
+    });
+  });
+}));
 
 // Routes
 app.get('/', function(req, res) {
