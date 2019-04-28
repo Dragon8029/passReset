@@ -156,7 +156,7 @@ app.post('/forgot', function(req, res, next) {
         var token = buf.toString('hex');
         done(err, token);
       });
-    };
+    },
     function(token, done) {
       User.findOne({ email: req.body.email}, function(err, user) {
         if (!user) {
