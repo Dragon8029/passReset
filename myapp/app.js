@@ -141,6 +141,12 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
+app.get('/forgot', function(req, res){
+  res.render('forgot', {
+    user: req.user
+  });
+});
+
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
