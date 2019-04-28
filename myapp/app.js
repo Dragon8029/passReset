@@ -12,6 +12,7 @@ var logger        = require('morgan');
 var cookieParser  = require('cookie-parser');
 var session       = require('express-session');
 var bodyParser    = require('body-parser');
+var flash         = require('express-flash');
 
 passport.use(new LocalStrategy(function(username, password, done){
   User.findOne({ username: username }, function(err, user) {
@@ -85,6 +86,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({ secret: 'session secret key', resave: true, saveUninitialized: true }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
