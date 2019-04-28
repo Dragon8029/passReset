@@ -29,5 +29,13 @@ html
               a(href='/login') Login
             li
               a(href='/signup') Signup
-    .container          
+    .container
+      if messages.error 
+        .alert.alert-danger
+          div= messages.error
+      if messages.info
+        .alert.alert-info
+          div= messages.info
+      if messages.success
+        .alert.alert-success          
       block content
