@@ -176,8 +176,8 @@ app.post('/forgot', function(req, res, next) {
       var smtpTransport = nodemailer.createTransport('SMTP', {
         service: 'SendGrid',
         auth: {
-          user: '!!! YOUR SENDGRID USERNAME !!!', 
-          pass: '!!! YOUR SENDGRID PASSWORD !!!'
+          user: '!!! Your SENDGRID USERNAME !!!', 
+          pass: '!!! Your SENDGRID PASSWORD !!!'
         }
       });
       var mailOptions = {
